@@ -32,6 +32,25 @@ pb_webm () {
   capture webm - | pb_ - .webm
 }
 
+usage() {
+    cat <<EOF
+Usage: $0 [ private ] [ png | gif | webm | <filename> [ <extension> ] ]
+
+  private: make the paste unlisted
+  png: upload a PNG screenshot created with maim -s
+  gif: upload a GIF animation created with capture
+  webm: upload a WEBM animation created with capture
+  <filename>: upload the given file, optionally with the specified <extension>
+
+Defaults to reading from standard input, use - as a filename to
+specify an extension.
+
+Environment:
+  PB_ENDPOINT: pastebin server URL (default: $endpoint)
+  PB_JSON: which bit of the JSON output to extract with jq (default: $jq_args)
+  PB_PRIVATE: make paste unlisted (default: $private)
+EOF
+}
 
 pb () {
   local command="$1"
@@ -53,6 +72,9 @@ pb () {
       shift
       private=1
       pb_ "$@"
+      ;;
+    -*)
+      usage
       ;;
     *)
       pb_ "$@"
