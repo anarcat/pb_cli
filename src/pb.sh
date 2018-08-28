@@ -49,6 +49,8 @@ Environment:
   PB_ENDPOINT: pastebin server URL (default: $endpoint)
   PB_JSON: which bit of the JSON output to extract with jq (default: $jq_args)
   PB_PRIVATE: make paste unlisted (default: $private)
+  PB_CLIPBOARD: if set, send paste output to the clipboard (default: $clipboard)
+  PB_CLIPBOARD_TOOL: which clipboard tool to use (default: $clipboard_tool)
 EOF
 }
 
