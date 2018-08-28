@@ -3,7 +3,8 @@
 endpoint="${PB_ENDPOINT:-https://ptpb.pw}"
 jq_args="${PB_JSON:--r .url}"
 private="${PB_PRIVATE:-0}"
-
+clipboard="${PB_CLIPBOARD}"
+clipboard_tool="${PB_CLIPBOARD_TOOL:-xclip}"
 
 pb_ () {
   local filename extension
@@ -13,20 +14,21 @@ pb_ () {
 
   shift 2
 
-  curl -sF "c=@$filename" -F "f=-$extension" -F "p=$private" \
-       -H 'accept: application/json' "$@" "$endpoint" | jq $jq_args
+  data=$(curl -sF "c=@$filename" -F "f=-$extension" -F "p=$private" \
+           -H 'accept: application/json' "$@" "$endpoint" | jq $jq_args)
+  if [[ ! -z $clipboard ]]; then
+    printf "${data}" | "${clipboard_tool}"
+  fi
+  echo "${data}"
 }
-
 
 pb_png () {
   maim -s | pb_ - .png
 }
 
-
 pb_gif () {
   capture gif - | pb_ - .gif
 }
-
 
 pb_webm () {
   capture webm - | pb_ - .webm
@@ -75,9 +77,12 @@ pb () {
       private=1
       pb_ "$@"
       ;;
+<<<<<<< .merge_file_ykj3Ho
     -*)
       usage
       ;;
+=======
+>>>>>>> .merge_file_f7U3yo
     *)
       pb_ "$@"
       ;;
