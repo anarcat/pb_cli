@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 endpoint="${PB_ENDPOINT:-https://ptpb.pw}"
 jq_args="${PB_JSON:--r .url}"
